@@ -49,11 +49,11 @@ float City::getDistance()
 
 void City::print()
 {
-	cout << "= = = = " << endl;
-	cout << "Name:	" << this->name << endl;
+	cout << "= = = = = = = = = =" << endl;
+	cout << "Nombre:	" << this->name << endl;
 	cout << "	X ->	" << this->x << endl;
 	cout << "	Y ->	" << this->y << endl;
-	cout << "Status: " << this->status << endl;
+	cout << "Estado: " << this->status << endl;
 }
 
 string City::getName() {

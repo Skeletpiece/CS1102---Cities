@@ -1,0 +1,6 @@
+Lima,32,65,A
+Ica,2,34,D
+Arequipa,87,45,A
+Cuzco,14,34,C
+Puno,134,24,C
+Tumbes,5,7,A

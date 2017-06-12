@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "stdio.h"
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -178,43 +179,38 @@ void changeCityStatus() {
 }
 
 void getListFromFile() {
-	/*fstream file("Ciudades.csv", ios::in);
+	ifstream file("Ciudades.txt");
 	string name, line;
 	float x, y;
 	char c;
 	
 	if (file.is_open()) {
 		cities.clear();
-		vector <string> name;
-		vector <double> x, y;
-		vector <char> status;
-
 		while (getline(file, name, ','))
 		{
-			getline(myFile, line, ',');
+			getline(file, line, ',');
 			x = atof(line.c_str());
-			getline(myFile, line, ',');
+			getline(file, line, ',');
 			y = atof(line.c_str());
-			getline(myFile, line, '\n');
+			getline(file, line, '\n');
 			c = line[0];
 			City add(name, x, y, c);
 			cities.push_back(add);
 		}
 	}
 	else cout << "No se pudo abrir el archivo de ciudades (Ciudades.csv)" << endl;
-	file.close();*/
+	file.close();
 }
 
 void setListToFile() {
-	fstream file("Ciudades.csv", ios::out);
+	ofstream file("Ciudades.txt");
 	string name, line;
 	float x, y;
 	char c;
 
-	file.clear();
-	file.open("Ciudades.csv");
-	for (it = cities.begin(); it != cities.end(); ++it) {
-		file << (*it).getName() << ',' << (*it).getX() << ',' << (*it).getY() << ',' << (*it).getStatus() << endl;
+	if (file.is_open()) {
+		for (it = cities.begin(); it != cities.end(); ++it)
+			file << (*it).getName() << ',' << (*it).getX() << ',' << (*it).getY() << ',' << (*it).getStatus() << endl;
 	}
 	file.close();
 }
