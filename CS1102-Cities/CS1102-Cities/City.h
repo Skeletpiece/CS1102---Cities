@@ -20,7 +20,9 @@ public:
 	float getDistance();	
 	void print();
 	string getName();
-	int getX();
-	int getY();
-	float getDistanceByCity(float, float);
+	float getDistanceByCity(City);
+	float getX();
+	float getY();
+	char getStatus();
+	void setStatus(char);
 };

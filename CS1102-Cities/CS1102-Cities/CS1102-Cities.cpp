@@ -4,7 +4,10 @@
 #include "stdafx.h"
 #include "stdio.h"
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <list>
+#include <vector>
 #include "City.h"
 using namespace std;
 
@@ -17,6 +20,11 @@ void listLess10Meters();
 void calculateAverageDistance();
 void getLongestDistance();
 void getShortestDistance();
+void listCitiesByStatus();
+void changeCityStatus();
+
+void getListFromFile();
+void setListToFile();
 
 static list <City> cities;
 static list <City>::iterator it;
@@ -27,41 +35,39 @@ int main()
 	initializeSeed();
 	while (true) {
 		cout << endl;
-		cout << "--------------------------------------------------------" << endl;
-		cout << "Menu" << endl;
-		cout << "~ ~ ~" << endl;
-		cout << "1. Agregar una nueva posicion" << endl;
-		cout << "2. Eliminar una posicion por nombre" << endl;
-		cout << "3. Listar los 100 primeros puntos" << endl;
-		cout << "4. Listar los puntos ubicados a menos de 10 metros" << endl;
-		cout << "5. Calcular la distancia promedio entre cada punto" << endl;
-		cout << "6. Determinar la distancia entre los puntos mas lejanos" << endl;
-		cout << "7. Determinar la distancia mas corta entre los puntos" << endl;
-		cout << "8. TBD" << endl;
-		cout << "9. TBD" << endl;
-		cout << "0. Salir" << endl;
+		cout << "|--------------------------------------------------------|" << endl;
+		cout << "|Menu                                                    |" << endl;
+		cout << "|~ ~ ~                                                   |" << endl;
+		cout << "|1. Agregar una nueva posicion                           |" << endl;
+		cout << "|2. Eliminar una posicion por nombre                     |" << endl;
+		cout << "|3. Listar los 100 primeros puntos                       |" << endl;
+		cout << "|4. Listar los puntos ubicados a menos de 10 metros      |" << endl;
+		cout << "|5. Calcular la distancia promedio entre cada punto      |" << endl;
+		cout << "|6. Determinar la distancia entre los puntos mas lejanos |" << endl;
+		cout << "|7. Determinar la distancia mas corta entre los puntos   |" << endl;
+		cout << "|8. Listar las ciudades por un estado                    |" << endl;
+		cout << "|9. Cambiar el estado de una ciudad                      |" << endl;
+		cout << "|0. Salir                                                |" << endl;
+		cout << "|--------------------------------------------------------|" << endl;
 		cout << endl << endl << "- Opcion: ";
 		cin >> option;
 
 		cout << string(100, '\n');
 		bool saber = isdigit(option[0]);
-		if (saber)			
+		if (saber) {
 			selection(option[0]);
+			setListToFile();
+		}
 		else 
 			cout << "**** Por favor ingrese una opcion valida ****" << endl << "- Opcion: ";		
 
-		if (option[0] == 0) break;
+		if (option[0] == '0') break;
 	}
     return 0;
 }
 
 void initializeSeed() {
-	City addedTestA("Lima", 32, 65, 'A');
-	cities.push_back(addedTestA);
-	City addedTestB("Ica", 2, 34, 'A');
-	cities.push_back(addedTestB);
-	City addedTestC("Arequipa", 87, 45, 'A');
-	cities.push_back(addedTestC);
+	getListFromFile();
 }
 
 void selection(int option)
@@ -72,6 +78,10 @@ void selection(int option)
 	case 51: listTop100(); break;
 	case 52: listLess10Meters(); break;
 	case 53: calculateAverageDistance(); break;
+	case 54: getLongestDistance(); break;
+	case 55: getShortestDistance(); break;
+	case 56: listCitiesByStatus(); break;
+	case 57: changeCityStatus(); break;
 	}
 }
 
@@ -116,21 +126,95 @@ void listLess10Meters() {
 }
 
 void calculateAverageDistance() {
-	float sumX = 0, sumY = 0;
+	float sum = 0;
 	for (it = cities.begin(); it != cities.end(); ++it) {
-		sumX += (*it).getX();
-		sumY += (*it).getY();
+		sum += (*it).getDistance();
 	}
-	cout << "- Distancia promedio de X: " << sumX / cities.size() << endl;
-	cout << "- Distancia promedio de Y: " << sumY / cities.size() << endl;
+	cout << "- Distancia promedio de los puntos es: " << sum / cities.size() << endl;
 }
 
 void getLongestDistance() {
-	for (it = cities.begin(); it != cities.end(); ++it) {
-	
+	float longest = numeric_limits<float>::min();
+	for (list <City>::iterator it_i = cities.begin(); it_i != cities.end(); ++it_i) {
+		for (list <City>::iterator it_j = cities.begin(); it_j != cities.end(); ++it_j)
+			if ((*it_i).getDistanceByCity(*it_j) > longest)
+				longest = (*it_i).getDistanceByCity(*it_j);
 	}
+	cout << "- Distancia mas lejana entre ciudades: " << longest << endl;
 }
 
 void getShortestDistance() {
+	float shortest = numeric_limits<float>::max();
+	for (list <City>::iterator it_i = cities.begin(); it_i != cities.end(); ++it_i) {
+		for (list <City>::iterator it_j = cities.begin(); it_j != cities.end(); ++it_j)
+			if ((*it_i).getDistanceByCity(*it_j) < shortest && (*it_i).getDistanceByCity(*it_j) > 0)
+				shortest = (*it_i).getDistanceByCity(*it_j);
+	}
+	cout << "- Distancia mas cercana entre ciudades: " << shortest << endl;
+}
 
+void listCitiesByStatus() {
+	char status;
+	cout << "- Ingrese el estado de la ciudad a listar: "; cin >> status;
+	for (it = cities.begin(); it != cities.end(); ++it)		
+		if ((*it).getStatus() == status)
+			(*it).print();
+	return;
+}
+
+void changeCityStatus() {
+	char status;
+	string name, cityName;
+	cout << "- Ingrese el nombre de la ciudad a modificar: "; cin >> name;
+	cout << endl << "- Ingrese el nuevo estado: "; cin >> status;
+	
+	for (it = cities.begin(); it != cities.end(); ++it) {
+		cityName = (*it).getName();
+		if (name.compare(cityName) == 0) {
+			(*it).setStatus(status);
+			return;
+		}
+	}
+}
+
+void getListFromFile() {
+	/*fstream file("Ciudades.csv", ios::in);
+	string name, line;
+	float x, y;
+	char c;
+	
+	if (file.is_open()) {
+		cities.clear();
+		vector <string> name;
+		vector <double> x, y;
+		vector <char> status;
+
+		while (getline(file, name, ','))
+		{
+			getline(myFile, line, ',');
+			x = atof(line.c_str());
+			getline(myFile, line, ',');
+			y = atof(line.c_str());
+			getline(myFile, line, '\n');
+			c = line[0];
+			City add(name, x, y, c);
+			cities.push_back(add);
+		}
+	}
+	else cout << "No se pudo abrir el archivo de ciudades (Ciudades.csv)" << endl;
+	file.close();*/
+}
+
+void setListToFile() {
+	fstream file("Ciudades.csv", ios::out);
+	string name, line;
+	float x, y;
+	char c;
+
+	file.clear();
+	file.open("Ciudades.csv");
+	for (it = cities.begin(); it != cities.end(); ++it) {
+		file << (*it).getName() << ',' << (*it).getX() << ',' << (*it).getY() << ',' << (*it).getStatus() << endl;
+	}
+	file.close();
 }

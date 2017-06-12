@@ -1,0 +1,10 @@
+﻿  stdafx.cpp
+  file.cpp
+  CS1102-Cities.cpp
+d:\users\jarias\documents\github\cs1102---cities\cs1102-cities\cs1102-cities\cs1102-cities.cpp(211): warning C4101: 'y': unreferenced local variable
+d:\users\jarias\documents\github\cs1102---cities\cs1102-cities\cs1102-cities\cs1102-cities.cpp(212): warning C4101: 'c': unreferenced local variable
+d:\users\jarias\documents\github\cs1102---cities\cs1102-cities\cs1102-cities\cs1102-cities.cpp(211): warning C4101: 'x': unreferenced local variable
+  City.cpp
+  Generating Code...
+  CS1102-Cities.vcxproj -> D:\Users\JArias\Documents\GitHub\CS1102---Cities\CS1102-Cities\x64\Debug\CS1102-Cities.exe
+  CS1102-Cities.vcxproj -> D:\Users\JArias\Documents\GitHub\CS1102---Cities\CS1102-Cities\x64\Debug\CS1102-Cities.pdb (Partial PDB)

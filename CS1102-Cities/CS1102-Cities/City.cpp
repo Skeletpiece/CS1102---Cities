@@ -60,15 +60,23 @@ string City::getName() {
 	return this->name;
 }
 
-int City::getX() {
+float City::getDistanceByCity(City remote)
+{
+	return sqrt((x - remote.x)*(x - remote.x) + (y - remote.y)*(y - remote.y));
+}
+
+float City::getX() {
 	return this->x;
 }
 
-int City::getY() {
+float City::getY() {
 	return this->y;
 }
 
-float City::getDistanceByCity(float rX, float rY)
-{
-	return sqrt((x - rX)*(x - rX) + (y - rY)*(y - rY));
+char City::getStatus() {
+	return this->status;
+}
+
+void City::setStatus(char c) {
+	this->status = c;
 }
