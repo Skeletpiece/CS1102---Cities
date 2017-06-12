@@ -1,0 +1,22 @@
+// City.h : Defines the city header for this project.
+//
+
+#pragma once
+#include <string>
+using namespace std;
+
+class City
+{
+private:
+	string name;
+	float x, y;
+	char status;
+public:
+	City();
+	City(string);
+	City(string, float, float);
+	City(string, float, float, char);
+	~City();
+	float getDistance();
+	void print();
+};
