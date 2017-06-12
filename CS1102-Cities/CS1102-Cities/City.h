@@ -17,6 +17,10 @@ public:
 	City(string, float, float);
 	City(string, float, float, char);
 	~City();
-	float getDistance();
+	float getDistance();	
 	void print();
+	string getName();
+	int getX();
+	int getY();
+	float getDistanceByCity(float, float);
 };

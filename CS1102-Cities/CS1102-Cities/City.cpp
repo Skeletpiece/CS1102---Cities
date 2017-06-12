@@ -39,6 +39,7 @@ City::City(string name, float x, float y, char status)
 
 City::~City()
 {
+	//	Destructor	-	Do nothing
 }
 
 float City::getDistance()
@@ -53,4 +54,21 @@ void City::print()
 	cout << "	X ->	" << this->x << endl;
 	cout << "	Y ->	" << this->y << endl;
 	cout << "Status: " << this->status << endl;
+}
+
+string City::getName() {
+	return this->name;
+}
+
+int City::getX() {
+	return this->x;
+}
+
+int City::getY() {
+	return this->y;
+}
+
+float City::getDistanceByCity(float rX, float rY)
+{
+	return sqrt((x - rX)*(x - rX) + (y - rY)*(y - rY));
 }
